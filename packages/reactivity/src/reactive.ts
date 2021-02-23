@@ -3,6 +3,7 @@ import {mutableHandlers,shallowReactiveHandlers,readonlyHandlers,shallowReadonly
 /**
  * 希望整个数据都变成响应式的
  */
+
 export function reactive(target: any) {
     return createReactiveObject(target,false,mutableHandlers); // 读取的对象，是不是仅读的，
 }
@@ -40,10 +41,12 @@ export function shallowReadonly(target: any) {
 const reactiveMap = new WeakMap();
 const readonlyMap = new WeakMap(); 
 
+// 创建响应式函数
 
+// 拦截的目标，是否是只读的，响应式函数(四种函数的响应式函数都不同)
 export function createReactiveObject(target: any,isReadonly: boolean,baseHandlers: {}) {
     // 如果目标不是对象 就没法拦截了
-    if(!isObject(target)) return target;
+    if(!isObject(target)) return target;  // reactive这个api只能拦截对象类型
 
     const proxyMap =  isReadonly ? readonlyMap : reactiveMap;
 

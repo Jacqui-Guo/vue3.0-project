@@ -10,6 +10,9 @@ import { reactive, readonly } from "./reactive";
 
 // 拦截设置的功能
 function createGetter(isReadonly = false,shallow = false) { 
+    // let proxy = receive() 取值的时候通过代理对象取值
+    // 取值：key 取的事源对象上的某个属性
+    // 参数三：指代理对象本身
     return function get(target: object,key: string | number | symbol,receiver: any) {
         // proxy + reflect 连用
         /**
@@ -54,19 +57,24 @@ let readonlyObj = {
     }
 };
 
+// 普通拦截
 export const mutableHandlers = {
     get,
     set
 } 
+
+// 浅的 普通 拦截
 export const shallowReactiveHandlers = {
     get: shallowGet,
     set: shallowSet
 };
 
+// 仅读数据拦截
 export const readonlyHandlers = assign({
     get: readonlyGet
 },readonlyObj);
 
+// 浅的 仅读的
 export const shallowReadonlyHandlers = assign({
     get: shallowReadonlyGet
 },readonlyObj);
